@@ -16,22 +16,23 @@
   <!--END: common.blade.php-->
 
   <!--StandardLayout.additionalGlobalHeadHTML-->
-  <script type="application/ld+json">
-{
-"@context": "http://schema.org",
-"@type": "NewsArticle",
-"headline": "Raya SOP expected to be out soon",
-"articleSection": "News",
-"creator": "MAZWIN NIK ANIS",
-"thumbnailUrl": "https://apicms.thestar.com.my/uploads/images/2021/05/04/1136495.jpg",
-"dateCreated": "2021-05-03T23:21:00.000Z", 
-"url": "https://www.thestar.com.my/news/nation/2021/05/04/raya-sop-expected-to-be-out-soon",
-"keywords":["\/News\/Nation" , "Covid-19 Watch", "Hari Raya Aidilfitri", "standard operating procedure", "SOP"]
-}
-</script>
+
   <!--START: article.blade.php test-->
 
-
+  <!-- Android native install app-->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/theme_metro/js/sw.js').then(function (registration) {
+          // Registration was successful
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+          // registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
 
   <link rel="manifest" href="/theme_metro/js/manifest.json">
 
