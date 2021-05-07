@@ -1,0 +1,64 @@
+$(function() {
+var val = "";
+
+if (val == "")
+{
+loadActive();
+}
+
+
+ 	$("#tabs li").on("click", function () {
+                  val  = $(this).text();
+                  
+				if (val == "Gainers")
+                         {
+{$("#tabs li").removeClass("selected");$('#tabs li[data-value="' + val + '"]').addClass('selected');}
+setTimeout(loadGainer(), 500);
+}
+else if (val == "Active")
+{
+{$("#tabs li").removeClass("selected");$('#tabs li[data-value="' + val + '"]').addClass('selected');}
+setTimeout(loadActive(), 500);
+}
+else if (val == "Losers")
+{
+{$("#tabs li").removeClass("selected");$('#tabs li[data-value="' + val + '"]').addClass('selected');}
+setTimeout(loadLoser(), 500);
+}						
+					
+
+   
+          });
+ });
+
+
+
+function loadActive() {
+    
+var i;
+var output = "";
+for(i = 0; i < activeData.Stocks.length; i++) {output += '<tr class="linedlist">' + '<td><a href="/Business/Marketwatch/Stocks?qcounter=' + activeData.Stocks[i].counter + '">' + activeData.Stocks[i].counter.replace("%26","&") + ' ' + '</a></td>' + '<td>' + activeData.Stocks[i].open + ' ' + '</td>' + '<td>' + activeData.Stocks[i].high + ' ' + '</td>' + '<td>' + activeData.Stocks[i].low + ' ' + '</td>' + '<td>' + activeData.Stocks[i].lastdone + ' ' + '</td>' + '<td>'; if (activeData.Stocks[i].change.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(activeData.Stocks[i].change=="0.000"){output +='<span>';} else {output += '<span class="quote_text_up">';} output += activeData.Stocks[i].change + '</span>' + '</td>' + '<td>'; if (activeData.Stocks[i].percentchange.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(activeData.Stocks[i].percentchange=="0.00"){output+='<span>';} else {output += '<span class="quote_text_up">'}; output += activeData.Stocks[i].percentchange + '</span>' + '</td>' + '<td>' + activeData.Stocks[i].volume + ' ' + '</td>' + '</tr>';} $("#marketwatchtable tbody").html(output);
+
+$("#morebutton").attr('href','/Business/Marketwatch/Stock-List?type=Active');
+
+
+};
+
+function loadGainer() {
+var i;
+var output = "";
+for(i = 0; i < gainerData.Stocks.length; i++) {output += '<tr class="linedlist">' + '<td><a href="/Business/Marketwatch/Stocks?qcounter=' + gainerData.Stocks[i].counter + '">' + gainerData.Stocks[i].counter.replace("%26","&") + ' ' + '</a></td>' + '<td>' + gainerData.Stocks[i].open + ' ' + '</td>' + '<td>' + gainerData.Stocks[i].high + ' ' + '</td>' + '<td>' + gainerData.Stocks[i].low + ' ' + '</td>' + '<td>' + gainerData.Stocks[i].lastdone + ' ' + '</td>' + '<td>'; if (gainerData.Stocks[i].change.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(gainerData.Stocks[i].change=="0.000"){output +='<span>';} else {output += '<span class="quote_text_up">';} output += gainerData.Stocks[i].change + '</span>' + '</td>' + '<td>'; if (gainerData.Stocks[i].percentchange.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(gainerData.Stocks[i].percentchange=="0.00"){output+='<span>';} else {output += '<span class="quote_text_up">'}; output += gainerData.Stocks[i].percentchange + '</span>' + '</td>' + '<td>' + gainerData.Stocks[i].volume + ' ' + '</td>' + '</tr>';} $("#marketwatchtable tbody").html(output);
+
+$("#morebutton").attr('href','/Business/Marketwatch/Stock-List?type=Gainers');
+
+
+};
+
+function loadLoser() {
+var i;
+var output = "";
+for(i = 0; i < loserData.Stocks.length; i++) {output += '<tr class="linedlist">' + '<td><a href="/Business/Marketwatch/Stocks?qcounter=' + loserData.Stocks[i].counter + '">' + loserData.Stocks[i].counter.replace("%26","&") + ' ' + '</a></td>' + '<td>' + loserData.Stocks[i].open + ' ' + '</td>' + '<td>' + loserData.Stocks[i].high + ' ' + '</td>' + '<td>' + loserData.Stocks[i].low + ' ' + '</td>' + '<td>' + loserData.Stocks[i].lastdone + ' ' + '</td>' + '<td>'; if (loserData.Stocks[i].change.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(loserData.Stocks[i].change=="0.000"){output +='<span>';} else {output += '<span class="quote_text_up">';} output += loserData.Stocks[i].change + '</span>' + '</td>' + '<td>'; if (loserData.Stocks[i].percentchange.indexOf("-") >= 0) {output += '<span class="quote_text_down">';}else if(loserData.Stocks[i].percentchange=="0.00"){output+='<span>';} else {output += '<span class="quote_text_up">'}; output += loserData.Stocks[i].percentchange + '</span>' + '</td>' + '<td>' + loserData.Stocks[i].volume + ' ' + '</td>' + '</tr>';} $("#marketwatchtable tbody").html(output);
+
+$("#morebutton").attr('href','/Business/Marketwatch/Stock-List?type=Losers');
+	
+};

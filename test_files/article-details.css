@@ -1,0 +1,105 @@
+.articleDetails{
+    overflow: hidden;
+    display: block;
+    padding-top: 25px;
+}
+
+#dailyalertbox{
+    position:fixed;
+    bottom:0px;
+    right: -430px;
+    z-index: 2300;
+}
+.social .service-panel{
+    width: 140px;
+}
+
+
+
+.articleDetails  .owl-articleMedia.owl-common .owl-next,
+.articleDetails  .owl-articleMedia.owl-common .owl-prev,
+.articleDetails  .owl-multipleImagesSlider.owl-common .owl-next,
+.articleDetails  .owl-multipleImagesSlider.owl-common .owl-prev{
+	background-color: #fff;
+	text-align: center;
+	line-height: 28px;
+}
+.articleDetails .owl-item.active{
+	background-color: transparent !important;
+}
+
+.articleDetails .owl-nav .owl-next,
+.articleDetails .owl-nav .owl-prev{
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	top: 10px;
+	background-color: #fff;
+	border-radius: 50%;
+	right: 0px;
+	z-index: 11;
+	position: absolute;
+
+}
+.articleDetails .owl-nav .owl-next{
+	right: 10px;
+}
+.articleDetails .owl-nav .owl-prev{
+	right: 50px;
+}
+.articleDetails .owl-nav .owl-next:before,
+.articleDetails .owl-nav .owl-prev:before{
+    font-size:13px;
+	font-weight: bold;
+    color: #000;
+    height: 30px;
+    width: 30px;
+    transition: 0.3s;
+	line-height: 30px;
+    border-radius: 50%;
+	text-align: center;
+}
+.articleDetails .owl-nav .owl-next:before{
+	content: "\f054";
+	font-family: fontAwesome;
+}
+.articleDetails .owl-nav .owl-prev:before{
+	content: "\f053";
+	font-family: fontAwesome;
+}
+.articleDetails .owl-nav .owl-next:hover:before,
+.articleDetails .owl-nav .owl-prev:hover:before{
+}
+
+
+.articleDetails .img-sticker img{
+	object-fit: contain;
+	/*background: #242424;*/
+}
+
+@media only screen and (max-width : 991px) {
+        .social .service-panel{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:768px){
+
+}
+.pw-hidden-cp{position: relative !important;left: 0 !important;}
+/*
+.stickSocial {
+	position: fixed !important;
+	top: 78px !important;
+	width: 202px;
+}
+
+@media screen and (max-width:990px){
+
+.stickSocial{ position: relative !important;
+top: inherit;
+z-index: 0;
+width: 100%;
+}
+
+}*/

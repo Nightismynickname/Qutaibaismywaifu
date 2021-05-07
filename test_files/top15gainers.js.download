@@ -1,0 +1,171 @@
+var gainerData = {
+"Stocks":
+[
+  {
+    "counter": "WIDETEC",
+    "open": "1.950",
+    "high": "2.150",
+    "low": "1.790",
+    "lastdone": "2.150",
+    "change": "0.490",
+    "volume": "5,875",
+    "percentchange": "29.52",
+    "stockcode": "7692"
+  },
+  {
+    "counter": "KLK",
+    "open": "22.240",
+    "high": "22.560",
+    "low": "22.140",
+    "lastdone": "22.520",
+    "change": "0.320",
+    "volume": "9,547",
+    "percentchange": "1.44",
+    "stockcode": "2445"
+  },
+  {
+    "counter": "QUALITY",
+    "open": "1.140",
+    "high": "1.400",
+    "low": "1.140",
+    "lastdone": "1.400",
+    "change": "0.300",
+    "volume": "620",
+    "percentchange": "27.27",
+    "stockcode": "7544"
+  },
+  {
+    "counter": "TIMWELL",
+    "open": "0.700",
+    "high": "1.000",
+    "low": "0.700",
+    "lastdone": "1.000",
+    "change": "0.300",
+    "volume": "16,109",
+    "percentchange": "42.86",
+    "stockcode": "7854"
+  },
+  {
+    "counter": "TOPGLOV",
+    "open": "5.060",
+    "high": "5.300",
+    "low": "5.010",
+    "lastdone": "5.260",
+    "change": "0.200",
+    "volume": "148,648",
+    "percentchange": "3.95",
+    "stockcode": "7113"
+  },
+  {
+    "counter": "KOSSAN",
+    "open": "4.020",
+    "high": "4.190",
+    "low": "3.960",
+    "lastdone": "4.190",
+    "change": "0.170",
+    "volume": "92,058",
+    "percentchange": "4.23",
+    "stockcode": "7153"
+  },
+  {
+    "counter": "MPI",
+    "open": "39.000",
+    "high": "39.300",
+    "low": "37.940",
+    "lastdone": "38.500",
+    "change": "0.160",
+    "volume": "1,112",
+    "percentchange": "0.42",
+    "stockcode": "3867"
+  },
+  {
+    "counter": "MYETFID",
+    "open": "1.310",
+    "high": "1.550",
+    "low": "1.310",
+    "lastdone": "1.550",
+    "change": "0.150",
+    "volume": "2,323",
+    "percentchange": "10.71",
+    "stockcode": "0824EA"
+  },
+  {
+    "counter": "MRDIY",
+    "open": "3.890",
+    "high": "4.000",
+    "low": "3.830",
+    "lastdone": "4.000",
+    "change": "0.130",
+    "volume": "51,765",
+    "percentchange": "3.36",
+    "stockcode": "5296"
+  },
+  {
+    "counter": "SIMEPLT",
+    "open": "4.600",
+    "high": "4.730",
+    "low": "4.550",
+    "lastdone": "4.710",
+    "change": "0.120",
+    "volume": "15,775",
+    "percentchange": "2.61",
+    "stockcode": "5285"
+  },
+  {
+    "counter": "PCHEM",
+    "open": "8.190",
+    "high": "8.330",
+    "low": "8.150",
+    "lastdone": "8.300",
+    "change": "0.110",
+    "volume": "86,562",
+    "percentchange": "1.34",
+    "stockcode": "5183"
+  },
+  {
+    "counter": "SHCHAN",
+    "open": "0.660",
+    "high": "0.775",
+    "low": "0.660",
+    "lastdone": "0.760",
+    "change": "0.105",
+    "volume": "10,537",
+    "percentchange": "16.03",
+    "stockcode": "4316"
+  },
+  {
+    "counter": "SKBSHUT",
+    "open": "1.110",
+    "high": "1.480",
+    "low": "1.110",
+    "lastdone": "1.260",
+    "change": "0.100",
+    "volume": "4,380",
+    "percentchange": "8.62",
+    "stockcode": "7115"
+  },
+  {
+    "counter": "UMS",
+    "open": "1.920",
+    "high": "2.020",
+    "low": "1.920",
+    "lastdone": "2.020",
+    "change": "0.100",
+    "volume": "38",
+    "percentchange": "5.21",
+    "stockcode": "7137"
+  },
+  {
+    "counter": "WOODLAN",
+    "open": "0.805",
+    "high": "1.090",
+    "low": "0.790",
+    "lastdone": "0.900",
+    "change": "0.100",
+    "volume": "28,994",
+    "percentchange": "12.50",
+    "stockcode": "7025"
+  }
+]
+}
+;

@@ -1,0 +1,113 @@
+@media print {
+
+a:after {
+content: ""; /* disable URL display if in #Content */
+}
+body{
+	padding-top: 0!important;
+	-webkit-print-color-adjust: exact;
+}
+
+	
+.story-wrapper, .story-wrapper * { 
+	visibility: visible;  
+	}
+
+.story-wrapper.col-md-8{
+	width:100%;
+	max-width:800px;
+	margin:0 auto;
+}
+	
+.story-wrapper .story-pg h1 {
+		font-size: 1.7em;
+	}
+	
+	ul#sideNote{
+		max-width:100%!important;
+	}
+	
+#navbar-main,.social-branding,.Inline.Ads-slot,.inlineAd, #widget-1326, .leaderboard, #widget-1333, #widget-1332, .ob-widget-section, #footer, footer.mobile,.story-wrapper ul.social,.OUTBRAIN, #emotify-container, #emotify-comment-container, #related-stories-div, .col-md-4.col-xs-12, #promobox, .btn--bookmark--big{
+	display:none;
+}
+.masthead {
+    background: none;
+}
+
+.container.masthead{
+	border-bottom:1px solid #efefef;
+    padding-bottom:10px;
+}
+.container.masthead, .navbar-brand {
+    float: none;
+    margin: 0 auto;
+    text-align: center;
+}
+
+ul.side-note{
+	position:static;
+	width:100%;
+	max-width: 800px;
+}
+	
+.story-wrapper li .byline {
+    width:100%;
+}
+
+.side-note p.date, .side-note p.top-15 {
+    float: left;
+    margin-right: 15px;
+}
+	
+ul#sideNote {
+    position: static!important;
+}
+
+.story-content{margin-left:0;width: 100%;}
+
+.topImages{
+	clear:both;
+	display:none;
+	margin:0 auto;
+}
+
+.topImages .slider-wrapper, .topImages .gallery-caption-wrapper, .topImages .slider-nav-thumbnails{
+	max-width:600px;
+	margin:0 auto;	
+}
+	
+	.col-profile .col-xs-5{
+		width:15%;
+	}
+	.col-profile .col-xs-12 {
+		width:85%;
+	}
+
+.footnote-image-holder {
+	width: 15%;	
+	}
+.footnote-text-holder {
+    width: 85%;
+}
+	
+	.story-set .col-xs-12.in-sec-story {
+		width: 33.33333333%;
+	}
+	
+.story-set .in-sec-story img{
+		display:none;
+	} 
+	
+	.story-set .col-xs-12.in-sec-story .col-xs-7{
+		width:100%;
+	}
+	
+	.footer-bottom {
+	background: transparent !important;
+	box-shadow: none !important;
+	text-shadow: none !important;
+	}
+	.footer-bottom p, .footer-bottom .container a{
+			color: #222 !important;
+	}
+}

@@ -1,0 +1,139 @@
+﻿var signinlink = 'https://login.thestar.com.my/';
+var hru = $("#hfldUrl1")[0].value;
+if (signinlink != undefined && hru != undefined && signinlink != "" && hru != "") {
+    jQuery(document).ready(function () {
+        //$("#btn_login > a").attr("href", signinlink + "?pw=1&ru=" + $("#hfldUrl1")[0].value);
+    });
+}
+
+function getCook(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+var username = getCook("pwu");
+var fbusername = getCook("fwu");
+
+if (username != null && username != "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].split("=")[0].indexOf("pwu") != -1) {
+            jQuery(document).ready(function () {
+                document.getElementById("btn_login").style.display = "none";
+                /*document.getElementById("login_menu").style.display = "block";*/
+				$("#login_menu").removeAttr("style");
+            });
+        }
+    }
+}
+
+if (fbusername != null && fbusername != "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        if (cookies[i].split("=")[0].indexOf("fwu") != -1) {
+            jQuery(document).ready(function () {
+                document.getElementById("btn_login").style.display = "none";
+                /*document.getElementById("login_menu").style.display = "block";*/
+				$("#login_menu").removeAttr("style");
+            });
+        }
+    }
+}
+
+
+function delete_cookie(name) {
+    document.cookie = name + '=; domain=.thestar.com.my; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+}
+
+function logout() {
+            var username = getCook("pwu");
+            var fbusername = getCook("fwu");	
+			var cxucookie = getCook("cxu");
+
+            if (fbusername != null && fbusername != "") {
+                //FB.getLoginStatus(function (response) {
+                    //console.log(response);
+                    //if (response.status === 'connected') {
+                        //access_token = FB.getAuthResponse()['accessToken'];
+                        FB.logout(function (response) {
+							delete_cookie("fblo_388467334571811");
+                        });
+                        var cookies = document.cookie.split(";");
+                        for (var i = 0; i < cookies.length; i++) {
+                            if (cookies[i].split("=")[0].indexOf("fwu") != -1) {
+                                delete_cookie(cookies[i].split("=")[0]);
+                            }
+                        }
+                    //}
+                //});
+
+            }
+			
+			if (cxucookie != null && cxucookie != "") {
+                        var cookies = document.cookie.split(";");
+                        for (var i = 0; i < cookies.length; i++) {
+                            if (cookies[i].split("=")[0].indexOf("cxu") != -1) {
+                                delete_cookie(cookies[i].split("=")[0]);
+                       }
+                 }
+            }
+            
+            // Polyfill for IE11
+            if (!String.prototype.startsWith) {
+                String.prototype.startsWith = function(searchString, position) {
+                    position = position || 0;
+                    return this.indexOf(searchString, position) === position;
+                };
+            }
+
+            if (username != null && username != "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    if (cookies[i].split("=")[0].indexOf("pwu") != -1) {
+                        var c = cookies[i].split("&");
+                        for (var j = 0; j < c.length; j++) {
+                            if (c[j].trim().startsWith("eem=")) {
+                                var eem = c[j].split("eem=")[1];
+                                //console.log('eem value: ' + eem);
+                            } else if (c[j].trim().startsWith("pwu=eem=")) {
+                                var eem = c[j].split("pwu=eem=")[1];
+                                //console.log('eem value2: ' + eem);
+                            }
+
+                            if (c[j].trim().startsWith("etk=")) {
+                                var etk = c[j].split("etk=")[1];
+                                //console.log('etk value: ' + etk);
+                            }
+                        }
+                        $.ajax({
+                            async: false,
+                            url: '/logout_sso',
+                            type: 'POST',
+                            data: {
+								'e': encodeURIComponent(eem),
+								't': encodeURIComponent(etk)
+							},
+success: function (data) {
+                        location.href = "https://auth.ssosvc.thestar.com.my/logout?client_id=5ab0981m9gnojmr4mleggr9a7s&logout_uri=https://sso.thestar.com.my/logout?channel=1";
+}
+ 
+                        });
+                        //delete_cookie(cookies[i].split("=")[0]);
+                        location.href = "https://auth.ssosvc.thestar.com.my/logout?client_id=5ab0981m9gnojmr4mleggr9a7s&logout_uri=https://sso.thestar.com.my/logout?channel=1";
+                    }
+
+                }
+            }
+
+        }

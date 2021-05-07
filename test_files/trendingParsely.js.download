@@ -1,0 +1,74 @@
+function trainParsely() {
+    var maxHistory = 50;
+    var base = location.protocol + "//" + location.hostname + "/api/parselyrecommendations";
+    var endpoint = "/profile";
+    var params = {
+        apikey: "thestar.com.my",
+        uuid: PARSELY.config.parsely_site_uuid,
+        url: [location.protocol, '//', location.host, location.pathname].join('')
+    };
+    var localStorID = "Trendinghistory";
+    var queryStr = $.param(params);
+    var apiUrl = base + endpoint + "/?" + queryStr;
+
+    //train parsley
+    //$.getJSON(apiUrl, function (data) { });
+
+    //track history url into localStorage
+    var historyItemString = window.localStorage[localStorID];
+    if (historyItemString) {
+        var historyItem = JSON.parse(historyItemString)
+
+        var index = historyItem.indexOf(params.url);
+        while (index > -1) {
+            historyItem.splice(index, 1);
+            index = historyItem.indexOf(params.url);
+        }
+        historyItem.push(params.url);
+        //get last n of history
+        historyItem = historyItem.slice(Math.max(historyItem.length - maxHistory, 0));
+        window.localStorage[localStorID] = JSON.stringify(historyItem);
+    }
+    else {
+        var newHistoryItem = [];
+        newHistoryItem.push(params.url);
+        window.localStorage.setItem(localStorID, JSON.stringify(newHistoryItem));
+    }
+};
+function trainParselyStar2Stories(star2URL) {
+    var maxHistory = 50;
+    var base = location.protocol + "//" + location.hostname + "/api/parselyrecommendations";
+    var endpoint = "/profile";
+    var params = {
+        apikey: "thestar.com.my",
+        uuid: PARSELY.config.parsely_site_uuid,
+        url: star2URL
+    };
+    var localStorID = "Trendinghistory";
+    var queryStr = $.param(params);
+    var apiUrl = base + endpoint + "/?" + queryStr;
+
+    //train parsley
+    //$.getJSON(apiUrl, function (data) { });
+
+    //track history url into localStorage
+    var historyItemString = window.localStorage[localStorID];
+    if (historyItemString) {
+        var historyItem = JSON.parse(historyItemString)
+
+        var index = historyItem.indexOf(params.url);
+        while (index > -1) {
+            historyItem.splice(index, 1);
+            index = historyItem.indexOf(params.url);
+        }
+        historyItem.push(params.url);
+        //get last n of history
+        historyItem = historyItem.slice(Math.max(historyItem.length - maxHistory, 0));
+        window.localStorage[localStorID] = JSON.stringify(historyItem);
+    }
+    else {
+        var newHistoryItem = [];
+        newHistoryItem.push(params.url);
+        window.localStorage.setItem(localStorID, JSON.stringify(newHistoryItem));
+    }
+};

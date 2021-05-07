@@ -1,0 +1,362 @@
+var id = '';
+var title = '';
+var desc = '';
+var image_url = '';
+var pdf_url = '';
+var pdf_file_name = '';
+var download = '';
+var ga_event = '';
+var startDate = '';
+var endDate = '';
+var startDate2 = '';
+var endDate2 = '';
+var startDateStr = '';
+var endDateStr = '';
+var startDateStr2 = '';
+var endDateStr2 = '';
+var cookie_visits = '';
+var cookie_hide = '';
+var criteria_show_no = '';
+var cookie_visits_duration = '';
+var cookie_hide_duration = '';
+var cookie_close_duration = '';
+var show_form = '';
+
+$(document).ready(function () {
+	getflyinGlobals();
+});
+
+function getflyinGlobals() {
+	var jsonUrl = 'https://cdn.thestar.com.my/Components/Flyin/Flyin.json?' + new Date().getTime();
+	
+	$.getJSON(jsonUrl, function (data) {
+		if (data.settings && data.settings.length != 0) {
+			var item = data.settings[0];
+			id = item.id;
+			show_form = item.show_form;
+			if (item.pdf_file_name)
+				pdf_file_name = item.pdf_file_name;
+			if (item.ga_event)
+				ga_event = item.ga_event;
+			if (item.title)
+				title = item.title;
+			if (item.summary)
+				desc = item.summary;
+			if (item.image_url)
+				image_url = item.image_url;
+			if (item.pdf_url)
+				pdf_url = item.pdf_url;
+			if (item.home_start_date) 
+				startDateStr = item.home_start_date;
+			if (item.home_end_date)
+				endDateStr = item.home_end_date.replace("00:00:00", "23:59:59");
+			if (item.article_start_date)
+				startDateStr2 = item.article_start_date;
+			if (item.article_end_date)
+				endDateStr2 = item.article_end_date.replace("00:00:00", "23:59:59");
+			if (item.criteria_show_no)
+				criteria_show_no = item.criteria_show_no;
+			if (item.cookie_visits_duration)
+				cookie_visits_duration = item.cookie_visits_duration;
+			if (item.cookie_close_duration)
+				cookie_close_duration = item.cookie_close_duration;
+			if (item.cookie_hide_duration)
+				cookie_hide_duration = item.cookie_hide_duration;
+			setflyinSettings();
+		} else {
+			console.log("Error reading Flyin json");
+			$('#widgetbox').remove();
+		}
+	});
+}
+
+function setflyinSettings() {
+	setflyinUI();
+	var windH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	var distanceTop = 175;
+
+	var current = new Date();
+	if (startDateStr) {
+		startDate = new Date(startDateStr);
+		if (startDate) {
+			dateStr = getflyinDateStr(startDate);
+			//cookie_visits = 'VisitFlyinBox' + dateStr;
+                    	//cookie_hide = 'HideFlyinBox' + dateStr;
+                    	cookie_visits = 'VisitFlyinBox_' + pdf_file_name.replace(".pdf", "") + '_' +  dateStr;
+                        cookie_hide = 'HideFlyinBox_' + pdf_file_name.replace(".pdf", "") + '_' + dateStr;
+		}              
+	}
+	if (endDateStr)
+		endDate = new Date(endDateStr);
+	if (startDateStr2)
+		startDate2 = new Date(startDateStr2);
+	if (endDateStr2)
+		endDate2 = new Date(endDateStr2);
+
+	var page_type = jQuery('meta[name=page_type]').attr("content");
+
+	var visits = GetCookieForAlertBox(cookie_visits) || 0;
+	var hidebox = GetCookieForAlertBox(cookie_hide);
+
+	if (current.getTime() > startDate.getTime() && current.getTime() < endDate.getTime() && page_type === "Home" && hidebox != 'YES') {
+		// Add 1 to it
+		visits++;
+		// Save the updated cookie
+		if (visits <= criteria_show_no) {
+			SetCookieForAlertBox(cookie_visits, visits, cookie_visits_duration);
+			gaTracking(visits);
+		}
+
+	}
+	else if (current.getTime() > startDate2.getTime() && current.getTime() < endDate2.getTime() && page_type === "Article" && hidebox != 'YES') {
+		// Add 1 to it
+		visits++;
+		// Save the updated cookie
+		if (visits <= criteria_show_no) {
+			SetCookieForAlertBox(cookie_visits, visits, cookie_visits_duration);
+			gaTracking(visits);
+		}
+	}
+
+	$('#widgetbox').hide();
+	var locCxense = '';
+	var hasScroll = false;
+
+	$(window).on("scroll", function () {
+		if (scrollPosition = $(this).scrollTop(), scrollPosition > distanceTop) {
+			var GotCookieDataAlertBox = GetCookieForAlertBox(cookie_hide);
+			if (!hasScroll) {
+				// locCxense = getLocationFromCxense();
+				hasScroll = true;
+			}
+			$('#widgetBoxCloseButton').on('click', function (e) {
+				$('#widgetbox').remove();
+				$('#widgetbox').css("z-index", "-1");
+				SetCookieForAlertBox(cookie_hide, 'YES', cookie_close_duration);
+				event.preventDefault();
+			});
+			if (GotCookieDataAlertBox == "YES") {
+				$('#widgetbox').remove();
+				$('#widgetbox').css("z-index", "-1");
+			} else {
+				if (current.getTime() > startDate.getTime() && current.getTime() < endDate.getTime() && visits <= criteria_show_no && page_type === "Home") {
+					$('#widgetbox').show();
+				}
+				else if (current.getTime() > startDate2.getTime() && current.getTime() < endDate2.getTime() && visits <= criteria_show_no && page_type === "Article") {
+					$('#widgetbox').show();
+				} else {
+					$('#widgetbox').remove();
+				}
+			}
+		} else {
+			$('#widgetbox').hide();
+		}
+	});
+
+	if (show_form) {
+		$('#widget-link').on('click', function (e) {
+			$('.openBox').css("display", "none");
+			$('#formbox').css("display", "block");
+		});
+
+		var form = document.getElementById('flyinform');
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			var name = $("input[name=txtName]").val();
+			var email = $("input[name=email]").val();
+			var phone = $("input[name=phone]").val();
+			$(".validate").empty();
+			if (email == '' && phone == '') {
+				$(".validate").append("Please fill in your email or phone details");
+			} else if (phone != '' && !validatePhonenumber(phone)) {
+				$(".validate").append("Your phone number is invalid");
+			} else {
+				$.ajax({
+					url: '/flyinform',
+					method: 'POST',
+					data: {
+						Form: title,
+						Name: name,
+						Email: email,
+						Phone: phone
+					},
+					success: function (response) {
+						if (response.success) {
+							downloadFile(pdf_url, pdf_file_name);
+							$('#formbox').css("display", "none");
+							$('.thankYouBox').css("display", "block");
+							SetCookieForAlertBox(cookie_hide, 'YES', cookie_hide_duration);
+						} else {
+							console.log(response);
+						}
+					},
+					error: function (error) {
+						console.log(error);
+					}
+				});
+			}
+
+		});
+	} else {
+		
+		$('#widget-link').on('click', function (e) {
+			$.ajax({
+				url: pdf_url,
+				method: 'GET',
+				success: function (data) {
+					downloadFile(pdf_url, pdf_file_name);
+					$('.openBox').css("display", "none");
+					$('.thankYouBox').css("display", "block");
+					SetCookieForAlertBox(cookie_hide, 'YES', cookie_hide_duration);
+				}
+			});
+
+		});
+	}
+
+	$('#widget-skip').on('click', function (e) {
+		$.ajax({
+			url: pdf_url,
+			method: 'GET',
+			success: function (data) {
+				downloadFile(pdf_url, pdf_file_name);
+				$('#formbox').css("display", "none");
+				$('.thankYouBox').css("display", "block");
+				//setTimeout(function () {
+				//    downloadFile(pdf_url, pdf_file_name);
+				//}, 3000);
+				SetCookieForAlertBox(cookie_hide, 'YES', cookie_hide_duration);
+			}
+		});
+
+	});
+
+	$('#widget-link2').on('click', function (e) {
+		$.ajax({
+			url: pdf_url,
+			method: 'GET',
+			success: function (data) {
+				downloadFile(pdf_url, pdf_file_name);
+				SetCookieForAlertBox(cookie_hide, 'YES', cookie_hide_duration);
+			}
+		});
+
+	});
+
+}
+
+function setflyinUI() {
+	//set UI info and oclick GA events
+	var ga = ''; var el = '';
+	if (ga_event) {
+		ga = "ga('send', 'event' , 'TSOL Pullout Close' , 'click' , '" + ga_event + "');";
+		el = $('#widgetBoxCloseButton');
+		el.attr('onclick', ga);
+		el = $('#widget-skip');
+		el.attr('onclick', ga);
+
+		ga = "ga('send', 'event' , 'TSOL Pullout Download' , 'click' , '" + ga_event + "');";
+		el = $('#widget-link');
+		el.attr('onclick', ga);
+		el = $('#widget-link2');
+		el.attr('onclick', ga);
+	}
+	if (title)
+		$('#widget-title').html(title)
+	if (desc)
+		$('#widget-desc').html(desc)
+	if (image_url)
+		$('#widget_img').attr('src', image_url);
+
+}
+
+function getflyinDateStr(date) {
+	var year = date.getFullYear().toString();
+	var month = (date.getMonth() + 101).toString().substring(1);
+	var day = (date.getDate() + 100).toString().substring(1);
+	return year + month + day;
+}
+
+function SetCookieForAlertBox(CookieName, CookieValue, hours) {
+	if (hours) {
+		var date = new Date();
+		date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else {
+		var expires = "";
+	}
+
+	var baseDomain = "; domain=.thestar.com.my";
+	document.cookie = CookieName + "=" + CookieValue + expires + baseDomain + ";path=/";
+}
+
+function GetCookieForAlertBox(CookieName) {
+	var theCookieName = CookieName + "=";
+	var ca = document.cookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') c = c.substring(1);
+		if (c.indexOf(theCookieName) == 0) return c.substring(theCookieName.length, c.length);
+	}
+	return "";
+}
+
+function validatePhonenumber(phonenumber) {
+	var re = /^[0-9]{10,}$/;
+	return re.test(phonenumber);
+}
+
+function gaTracking(visits) {
+	var GAvisit = 'WidgetShown_' + visits;
+	(function (i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date(); a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+	ga('create', 'UA-828580-1');                 
+	ga('send', 'event', GAvisit, 'load', GAvisit);
+}
+
+function getLocationFromCxense() {
+	let loc = '';
+	$.ajax({
+		url: 'https://api.cxense.com/public/widget/data?json=%7B%22widgetId%22%3A%229e7fc702a43b1be8a93ff1a717c2b8eddb0ccdf2%22%7D',
+		method: 'GET',
+		async: false,
+		cache: false,
+		success: function (data) {
+			loc = data.items[0].loc;
+		},
+		error: function (err) {
+			console.log(err);
+		}
+	});
+	//console.log(loc);
+	return loc;
+}
+
+function downloadFile(urlToSend, fileName) {
+	var req = new XMLHttpRequest();
+	req.open("GET", urlToSend, true);
+	req.responseType = "blob";
+	req.onload = function (event) {
+		var blob = req.response;
+		var contentType = req.getResponseHeader("content-type");
+		//TO REMOVE when add different extenstions
+		if (!fileName.includes(".pdf"))
+			fileName = fileName + '.pdf';
+
+		// IE/EDGE seems not returning some response header
+		if (window.navigator.msSaveOrOpenBlob) {
+			// Internet Explorer
+			window.navigator.msSaveOrOpenBlob(new Blob([blob], { type: contentType }), fileName);
+		} else {
+			var el = document.createElement('a');
+			el.href = window.URL.createObjectURL(blob);
+			el.download = fileName;
+			el.click();
+		}
+	};
+	req.send();
+}

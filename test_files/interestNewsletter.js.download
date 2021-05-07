@@ -1,0 +1,187 @@
+﻿function GetCurrentSection() {
+    var sectionIndex = 3;
+    var subsectionIndex = 4;
+    var allowThirdSubsection = false;
+    var sectionArray = [];
+    var currentUrl = location.href;
+    var currentUrlArray = currentUrl.split("/");
+    var section;
+    var subsection;
+
+    var page_type = GetCurrentMeta('page_type', false);
+	if (page_type == 'Article') {
+		 sectionArray = ["business", "lifestyle"];
+	}
+	else{
+		 sectionArray = ["news", "business", "sport", "opinion", "metro", "tech", "aseanplus", "lifestyle", "education", "food", "tag"];
+	}
+    if (sectionIndex < currentUrlArray.length) {
+        var sectTemp = currentUrlArray[sectionIndex];
+        for (var i = 0; i < sectionArray.length; i++) {
+            if (sectionArray[i] === sectTemp.toLowerCase()) {
+                section = sectionArray[i];
+            }
+        }
+    }
+    if (section != null) {
+    	return section;
+    }
+    return "";
+}
+function GetCurrentSectionSubsection(section) {
+    var sectionIndex = 3;
+    var subsectionIndex = 4;
+    var allowThirdSubsection = false;
+    var currentUrl = location.href;
+    var currentUrlArray = currentUrl.split("/");
+    var subsection;
+    if (section != null) {
+        if (subsectionIndex < currentUrlArray.length) {
+            if (allowThirdSubsection) {
+                if (subsectionIndex + 1 < currentUrlArray.length) {
+                    var nextUrl = TryParseInt(currentUrlArray[subsectionIndex + 1], 0);
+                    if (nextUrl == 0) {
+                        subsection = '/' + currentUrlArray[subsectionIndex] + '/' + currentUrlArray[subsectionIndex + 1];
+                    } else {
+                        subsection = '/' + currentUrlArray[subsectionIndex];
+                    }
+                } else {
+                    subsection = '/' + currentUrlArray[subsectionIndex];
+                }
+            } else {
+                subsection = '/' + currentUrlArray[subsectionIndex];
+            }            
+        } else {
+            subsection = '';
+        }
+        return section + subsection;
+    }
+    return "";
+}
+
+function TryParseInt(str, defaultValue) {
+    var retValue = defaultValue;
+    if (str !== null) {
+        if (str.length > 0) {
+            if (!isNaN(str)) {
+                retValue = parseInt(str);
+            }
+        }
+    }
+    return retValue;
+}
+
+function GetCurrentTag() {
+    var tagIndex = 3
+    var currentUrl = location.href;
+    var currentUrlArray = currentUrl.split("/");
+    if (tagIndex < currentUrlArray.length) {
+        if (currentUrlArray[tagIndex] == 'tag') {
+            return currentUrlArray[tagIndex + 1];
+        } 
+    }
+    return "";
+}
+
+// get any meta by name
+function GetCurrentMeta(metaName, iskeyword) {
+    const metas = document.getElementsByTagName('meta');
+    var result;
+    for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute('name') === metaName) {
+            result = metas[i].getAttribute('content');
+        }
+    }
+    if (result != null) {
+        if (iskeyword == true) {
+            var keywordsArr = result.split(/[,;]+/);
+            return keywordsArr[0];
+        } else {
+            return result;
+        }
+    }
+    return "";
+}
+
+var strsection = GetCurrentSection();
+var newsurl = "https://sites.thestar.com.my/tsolnewsletter/default.aspx";
+var storynewsurl = "https://sites.thestar.com.my/tsolnewsletter/default_story.aspx";
+var params = "";
+
+if(strsection != ""){
+
+// Identify page type and send appropriate param(s)
+var tag = GetCurrentTag();
+if (tag != '') {
+    // tag  page
+    if (tag.charAt(tag.length - 1) == "/") { tag = tag.substr(0, tag.length - 1); }
+    params = '?k=' + encodeURIComponent(tag.toLowerCase());
+    document.getElementById('ifnewsletter').src = newsurl + params;
+}
+else
+{
+    var sectionsubsection = GetCurrentSectionSubsection(strsection);
+    var kickerUrl = GetCurrentMeta('cXenseParse:kicker_url', false).replace(/^\/|\/$/g, '');
+    var page_type = GetCurrentMeta('page_type', false);
+    var ku = "";
+    var keyword = GetCurrentMeta('keywords', true);
+    if (page_type == 'Article') {
+	if (jQuery('#cx_paywall').length == 0){
+        // story page
+        if (kickerUrl != '' && kickerUrl != sectionsubsection) {//if kicker_url exist, use this url as s value
+            ku = '&ku=' + encodeURIComponent(kickerUrl.toLowerCase());
+        }
+        if (keyword.charAt(keyword.length - 1) == "/") 
+	{ 
+		keyword = keyword.substr(0, keyword.length - 1); 
+		if(keyword.toLowerCase() != "na")
+			keyword = '&k=' + encodeURIComponent(keyword.toLowerCase());
+		else
+			keyword = "";
+	}
+	else if(encodeURIComponent(keyword.toLowerCase()) == "na")
+		keyword = "";
+	else
+		keyword = '&k=' + encodeURIComponent(keyword.toLowerCase());
+	
+        params = '?s=' + encodeURIComponent(sectionsubsection.toLowerCase()) + keyword + ku;
+        document.getElementById('ifnewsletter').src = storynewsurl + params;
+	}
+else
+            $('#ifnewsletter').hide();
+    } else if (sectionsubsection != '') {
+        // section/subsecton page
+        if (sectionsubsection.charAt(sectionsubsection.length - 1) == "/") { sectionsubsection = sectionsubsection.substr(0, sectionsubsection.length - 1); }
+        params = '?s=' + encodeURIComponent(sectionsubsection.toLowerCase());
+        document.getElementById('ifnewsletter').src = newsurl + params;
+    } else {
+        //default
+	document.getElementById('ifnewsletter').style.height = '320px';
+        document.getElementById('ifnewsletter').src = newsurl;
+    }
+}
+}
+else{
+            $('#ifnewsletter').hide();
+            $('#responsiveIframe1').hide();
+}
+
+
+//listener for postMessage
+if (window.addEventListener) {
+    window.addEventListener('message', receiveMessage, false);
+} else if (window.attachEvent) { // ie8
+    window.attachEvent('onmessage', receiveMessage);
+}
+function receiveMessage(e) {
+    if (e.origin === 'https://sites.thestar.com.my') {
+        //console.log('message: ' + e.data);
+        if (e.data === '33') {
+		document.getElementById('ifnewsletter').style.height = '405px';
+        }
+        else if (e.data === '5') {
+            $('#ifnewsletter').hide();
+		//document.getElementById('ifnewsletter').style.height = '320px';
+        }
+    }
+}

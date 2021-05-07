@@ -1,0 +1,51 @@
+/*
+ * Navigation Selection URL Path TSOL - v1.1
+ * on focus search bar
+ * disable scroll on menu bar click
+ */
+(function ($) {
+    $(document).ready(function () {
+        'use strict'
+        var backgroundColor = "#f0f0f0";
+        var firstPath = $(location).attr('pathname');
+        firstPath.indexOf(1);
+        firstPath = firstPath.toLowerCase();
+        firstPath = firstPath.split("/")[1]; //get first path
+
+	if(firstPath == "aseanplus")
+		firstPath = "asean\\+";
+        
+        var firstPathJstr = ".dropdown #navi-"+firstPath;
+        //find #navi-firstPath and return it's parent.
+        var firstPathJObj = $(firstPathJstr).parent();
+        if (firstPathJObj && firstPathJObj.length !== 0) {
+			$(firstPathJstr).addClass("active");
+			/*$(firstPathJstr).css("color", "black");
+			firstPathJObj.css("background", backgroundColor);*/
+		}   
+        else {
+            //set home button
+            var homejObj = $("#navi-home").parent();
+            if(homejObj) {
+				/*homejObj.css("background", backgroundColor);
+				$("#navi-home").children().css("filter", "invert(1)");*/
+				$("#navi-home").addClass("active");
+			}
+                
+
+        }
+		 $("#buttonsearch").click(function () {
+            document.getElementById('qTextBox').focus();
+        });
+		$("#searchInput").on('shown.bs.collapse', function () {
+            document.getElementById('qTextBox').focus();
+        });
+		$("#tsolmobar").on('show.bs.collapse', function(){
+		  $("body").addClass("modal-open");
+		});
+		$("#tsolmobar").on('hide.bs.collapse', function(){
+		  $("body").removeClass("modal-open");
+		});
+
+    })
+})(jQuery);

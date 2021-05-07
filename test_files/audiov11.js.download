@@ -1,0 +1,601 @@
+let first = `
+    <div class="audio-box-ctr">
+      <div class="audio-box">
+		<div class="drop__close">
+            <div class="drop__closebutton">
+                <i class="fa fa-times"></i>
+            </div>
+        </div>
+        <div class="player-box">
+          <audio id="audioPlayer" preload="metadata"></audio>
+          <div id="audioSources" class="hidden"></div>
+          <div class="btn-container">
+            <div class="btn btn-play">
+              <div class="fa play-pause fa-play"></div>
+            </div>
+          </div>
+          <div class="info">
+            <div class="date"></div>
+            <div class="nowplaying">
+              <div class="title-box"></div>
+            </div>
+            <div class="controllers">
+              <div class="inner">
+                <div class="audio-control-btn prev-btn" id="prev">
+                  <i class="fa fa-step-backward"></i>
+                </div>
+                <div class="progressbox">
+                  <input type="range" min="0" max="100" id="progress" value="0">
+                </div>
+                <div class="audio-control-btn next-btn" id="next">
+                  <i class="fa fa-step-forward"></i>
+                </div>
+              </div>
+              <div class="volume">
+                <i class="fa mute-unmute volume-up"></i>
+              </div>              
+            </div>                                      
+            <div class="clearfix"></div>
+            <div class="bottom">
+              <div class="duration"></div>                           
+            </div>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+		<div class="drop__inner">
+                <div class="tab-content">
+                    <div id="mn-latest" class="tab-pane tab-pane-audio fade in active">
+                        <div class="playlist" id="audioPlaylist">
+                    </div>
+                    </div>
+                    <div id="mn-foryou" class="tab-pane tab-pane-foryou fade text-center">
+                        <div class="icon-headphone"></div>
+                        <h4>Want to listen to full audio?</h4>
+                        <p>Unlock unlimited access to enjoy personalise features on the TheStar.com.my</p>
+                        <div class="btn btn-block btn--subscribe">
+                            Subscribe
+                        </div>
+                        <small>Already a member? <a href="#">Log In</a></small>
+                    </div>
+                </div>
+        </div>
+      </div>
+    </div>
+	`;
+
+$(".drop--audio").html(first);
+
+function updateRangeProgress() {
+    var target = document.getElementById('progress'),
+        min = target.min,
+        max = target.max,
+        val = target.value;
+
+    $(target).css({
+        'backgroundSize': (val - min) * 100 / (max - min) + '% 100%'
+    });
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function formatPubdate(date) {
+    const event = new Date(Date.parse(date));
+
+    const options = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    };
+
+    return event.toLocaleDateString('en-MY', options);
+}
+
+function formatTime(seconds, custom = false) {
+    if (custom) {
+        let minutes = Math.floor(seconds / 60);
+        seconds = Math.floor(seconds - minutes * 60);
+
+        if (minutes > 0) {
+            if (seconds > 0) {
+                return minutes + " min " + seconds + " sec";
+            }
+            else {
+                return minutes + " min";
+            }
+        }
+        else {
+            return seconds + " sec";
+        }
+    }
+    else {
+        let minutes = Math.floor(seconds / 60);
+        minutes = (minutes >= 10) ? minutes : "0" + minutes;
+        seconds = Math.floor(seconds % 60);
+        seconds = (seconds >= 10) ? seconds : "0" + seconds;
+        return minutes + ":" + seconds;
+    }
+}
+
+async function getNews(id) {
+    let feedUrl = "https://cdn.thestar.com.my/Content/Text/short-with-headline/" + id + ".json";
+    let jCallback = "jsonCallback" + id.replace("{", "").replace("}", "");
+    jCallback = replaceAll(jCallback, '-', '');
+
+    let response = null;
+
+    await $.ajax({
+        type: 'GET',
+        url: feedUrl,
+        contentType: "application/json",
+        jsonpCallback: jCallback,
+        dataType: 'jsonp',
+        success: function (obj) {
+            response = obj;
+        },
+        error: function (jqXHR, exception) {
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'Not connect.\n Verify Network.';
+            } else if (jqXHR.status == 404) {
+                //msg = 'Requested page not found. [404]';
+            } else if (jqXHR.status == 500) {
+                msg = 'Internal Server Error [500].';
+            } else if (jqXHR.status == 403) {
+                msg = 'Access Denied Error [403].';
+            } else if (exception === 'parsererror') {
+                msg = 'Requested JSON parse failed.';
+            } else if (exception === 'timeout') {
+                msg = 'Time out error.';
+            } else if (exception === 'abort') {
+                msg = 'Ajax request aborted.';
+            } else {
+                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            }
+            //console.log(msg);
+			return null;
+        },
+        timeout: 15000
+    });
+
+    return response;
+}
+
+//Convert first letter of each word to Upper Case for a string
+function titleCase(str) {
+        var splitStr = str.toLowerCase().split(' ');
+        for (var i = 0; i < splitStr.length; i++) {
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+        }
+        return splitStr.join(' ');
+}
+
+async function generatePlaylist(audioPlayer) {
+    //let myStoriesHistory = window.localStorage[PARSELY.config.parsely_site_uuid + "-history"],
+        //myStoriesArr = '',
+        parselyGuid = [],
+        parselyStories = [],
+        counter = 0,
+        data = null,
+        loading = true;
+
+    //if (myStoriesHistory) {
+        //myStoriesArr = jQuery.parseJSON(myStoriesHistory);
+		//console.log(myStoriesArr);
+    //}
+
+    // Get News list
+    await $.getJSON('https://cdn.thestar.com.my/Content/Data/cxense_data.json', function (data) {
+        parselyStories = data;
+    });
+
+    // Sort
+    const sortBy = (function () {
+        let toString = Object.prototype.toString,
+            // default parser function
+            parse = function (x) {
+                return x;
+            },
+            // gets the item to be sorted
+            getItem = function (x) {
+                let isObject = x != null && typeof x === "object";
+                let isProp = isObject && this.prop in x;
+                return this.parser(isProp ? x[this.prop] : x);
+            };
+
+        /**
+         * Sorts an array of elements.
+         *
+         * @param {Array} array: the collection to sort
+         * @param {Object} cfg: the configuration options
+         * @property {String}   cfg.prop: property name (if it is an Array of objects)
+         * @property {Boolean}  cfg.desc: determines whether the sort is descending
+         * @property {Function} cfg.parser: function to parse the items to expected type
+         * @return {Array}
+         */
+        return function sortby(array, cfg) {
+            if (!(array instanceof Array && array.length)) return [];
+            if (toString.call(cfg) !== "[object Object]") cfg = {};
+            if (typeof cfg.parser !== "function") cfg.parser = parse;
+            cfg.desc = !!cfg.desc ? -1 : 1;
+            return array.sort(function (a, b) {
+                a = getItem.call(cfg, a);
+                b = getItem.call(cfg, b);
+                return cfg.desc * (a < b ? -1 : +(a > b));
+            });
+        };
+
+    }());
+
+    if (parselyStories) {
+        let parseObj = parselyStories;
+        parseObj = sortBy(parseObj.data, {
+            prop: "pub_date",
+            desc: true
+        });
+
+        for (i = 0; i < parseObj.length; i++) {
+            let parselyStoryLink = parseObj[i].url.replace("http://", "https://");
+            //let isFound = myStoriesArr.includes(parselyStoryLink);
+            //if (!isFound) { //&& (parselyStoryLink.indexOf("/news/nation/") > -1 || parselyStoryLink.indexOf("/sport/") > -1)) {
+                parselyGuid.push(parseObj[i].guid);
+            //}
+        }
+    }
+
+    // Generate playlist
+    parselyGuid = parselyGuid.slice(0, 10);
+
+    data = await getNews(parselyGuid[counter]);
+
+    if (data) {
+        $('#audioPlaylist')[0].innerHTML = '<div class="heading">All Headlines:</div>';
+        audioPlayer.src = data.audio;
+    }
+
+    audioPlayer.onloadedmetadata = async function () {
+        if (loading) {
+            let htmlParsely = $('#audioPlaylist')[0].innerHTML,
+                htmlAudioTag = $('#audioSources')[0].innerHTML,
+                formattedDate = formatPubdate(data.pubDate);
+			splitLink = data.link.split('/');
+			if (data.link != "") {
+				var catSubCat = titleCase(splitLink[3].replace("-"," ")) + "/" + titleCase(splitLink[4].replace("-"," "));
+				if (data.link.indexOf("star2.com") > 0) {
+					catSubCat = titleCase(splitLink[3].replace("-"," "));
+				}   
+			}
+			else {
+				catSubCat = "NA";
+			}	
+            var lnk = data.link;
+			if (data.clickUrl)
+				lnk = data.clickUrl
+            lnk = lnk.replace('http://', 'https://');
+            if (counter !== 0) {
+                htmlParsely += `
+				<div class="tracks" data-audio="${data.audio}" data-date="${formattedDate}" data-title="${data.headline}" data-track-number="${counter * 2 - 1}" data-position="${counter}" data-guid="${data.guid}" data-category="${catSubCat}" data-author="${data.author}">
+				  <div class="play-btn">
+					<i class="fa fa-play"></i>
+				  </div>
+				  <div class="info">  
+					<h3>${data.headline}</h3>
+					<p>${formatTime(this.duration, true)}</p>
+				  </div>
+				  <div class="read">
+					<a target="blank" href="${lnk}">
+					  <div class="read-btn">Read</div>
+					</a>
+				  </div>
+				  <div class="clearfix"></div>
+				</div>`;
+            }
+
+            if (counter === 0) {
+                htmlAudioTag += `<div data-audio="https://cdn.thestar.com.my/Content/Audio/intro.mp3" data-date="${formattedDate}" data-title="Intro" data-track-number="0"></div>`;
+            } else {
+                htmlAudioTag += `<div data-audio="${data.audio}" data-date="${formattedDate}" data-title="${data.headline}" data-track-number="${counter * 2 - 1}" data-position="${counter}" data-guid="${data.guid}" data-category="${catSubCat}" data-author="${data.author}"></div>`;
+            }
+
+            if (counter === 0) {
+				var today = new Date();
+                $('.player-box .info .date').html(formatPubdate(today));
+                $('.player-box .info .nowplaying .title-box').html('');
+                $('.duration').html("00:00/" + formatTime(this.duration));
+            }
+
+            if (counter === 10) {
+                htmlAudioTag += `<div data-audio="https://cdn.thestar.com.my/Content/Audio/signoff.mp3" data-date="${formattedDate}" data-title="Signoff" data-track-number="${counter * 2}"></div>`;
+            }
+            else if (counter !== 0 && counter !== (parselyGuid.length)) { //no next audio after the last audio in the playlist
+                htmlAudioTag += `<div data-audio="https://cdn.thestar.com.my/Content/Audio/next.mp3" data-date="${formatPubdate(new Date())}" data-title="Next" data-track-number="${counter * 2}"></div>`;
+            }
+
+            $('#audioPlaylist')[0].innerHTML = htmlParsely;
+            $('#audioSources')[0].innerHTML = htmlAudioTag;
+
+            counter++;
+
+            if (counter <= parselyGuid.length) {
+                data = await getNews(parselyGuid[counter - 1]);
+
+                if (data) {
+                    audioPlayer.src = data.audio;
+                }
+            } else {
+                loading = false;
+                audioPlayer.src = $($('#audioSources').find('div:first')[0]).data('audio');
+            }
+
+        }
+    }
+}
+
+$(function () {
+    let aud = $('audio')[0],
+        $audioSources = $('#audioSources'),
+        track_number = 0,
+        $progressBox = $(".progressbox"),
+        $playButton = $('.play-pause'),
+        $podcast = $('.drop__closebutton'),
+        $audioBoxCtr = $(".audio-box-ctr"),
+        $audioPlaylist = $('#audioPlaylist'),
+        $date = $('.player-box .info .date'),
+        $title = $('.player-box .info .nowplaying .title-box'),
+        $volume = $('.volume'),
+        $mute = $('.mute-unmute'),
+        $prevNextBtn = $('.audio-control-btn'),
+        hasAudioStarted = false,
+        $prevBtn = $('.prev-btn'),
+        $nextBtn = $('.next-btn'),
+		$podcastStart = $('.audionav__toggle'); 
+
+    updateRangeProgress();
+
+    var timer = window.setInterval(function () {
+        //if (typeof (PARSELY.config) != "undefined" && (PARSELY.config).hasOwnProperty("parsely_site_uuid")) {
+            generatePlaylist($('#audioPlayer')[0]);
+            window.clearInterval(timer);
+        //}
+    }, 500);
+
+    // initial state
+    $volume.slideUp();
+    $prevNextBtn.slideUp();
+    $progressBox.slideUp();
+
+    // Start/stop audio player
+    $('.btn-play').click(function () {
+        aud.paused ? startAudioPlayer() : stopAudioPlayer();
+    });
+
+    // Toggle on/off volume
+    $volume.click(function () {
+        aud.muted = !aud.muted;
+        $mute.removeClass('volume-off volume-up').addClass(aud.muted ? 'volume-off' : 'volume-up');
+        if (aud.muted) { ga('send', 'event', 'Audio', 'click', 'Mute Audio'); } else { ga('send', 'event', 'Audio', 'click', 'Unmute Audio'); }
+    });
+
+    aud.ontimeupdate = function () {
+        if (!aud.paused) {
+            if (aud.duration) {
+                $('#progress').val(aud.currentTime / aud.duration * 100);
+                updateRangeProgress();
+
+                var finalTime = formatTime(aud.duration);
+                var currTime = formatTime(aud.currentTime);
+                $('.duration').html(currTime + "/" + finalTime);
+            } else { //no duration, meaning we are playing the "next story audio" (next.mp3)
+                $('.duration').html("00:00/00:02");
+            }
+        }
+    }
+
+    // Plays the next audio in the list
+    $('audio#audioPlayer').on('ended', function () {
+        track_number++;
+
+        let $next_track = $audioSources.find(`div[data-track-number="${track_number}"]`),
+            TOTAL_TRACKS = $('#audioSources').children().length;
+        if ($next_track.length > 0) {
+            setPlayerMediaInfo($next_track);
+            aud.pause();
+            aud.load();
+            startAudioPlayer();
+        }
+        else {
+            if (track_number > TOTAL_TRACKS - 1) { track_number = 0; setPlayerMediaInfo($audioSources.find(`div[data-track-number="${track_number}"]`)); }
+            stopAudioPlayer(); //done playing the last audio in the playlist
+        }
+    });
+
+    $('#progress').on('input', function (e) {
+        aud.pause();
+        updateRangeProgress();
+    }).on('change', function (e) {
+        aud.pause();
+        aud.currentTime = aud.duration * (e.target.value / 100);
+        aud.play();
+    });
+
+    // Toggle the audioBoxCtr
+    $podcast.click(function () {
+        //$audioBoxCtr.toggle();
+        //$(this).toggleClass("podcast-close");
+        stopAudioPlayer();
+        $audioBoxCtr.is(':visible') ? ga('send', 'event', 'Audio', 'click', 'Expand Audio') : ga('send', 'event', 'Audio', 'click', 'Collapse Audio');
+        if ($audioBoxCtr.is(':visible')) { if ($('#audioPlayer')[0] != undefined) { $('#audioPlayer')[0].play(); } }
+    });
+	
+	// Toggle the audioBoxCtr
+    $podcastStart.click(function () {
+        //$audioBoxCtr.toggle();
+        //$(this).toggleClass("podcast-close");
+        stopAudioPlayer();
+        $audioBoxCtr.is(':visible') ? ga('send', 'event', 'Audio', 'click', 'Expand Audio') : ga('send', 'event', 'Audio', 'click', 'Collapse Audio');
+        if ($audioBoxCtr.is(':visible')) { if ($('#audioPlayer')[0] != undefined) { $('#audioPlayer')[0].play(); $playButton.removeClass('fa-play').addClass('fa-pause');$volume.slideDown();$prevNextBtn.slideDown(); $progressBox.slideDown(); } }
+    });
+
+    $audioPlaylist.click(function (evt) {
+        // if we clicked on read button, we immediately open new tab, and we're done. we do need to stop audio though.
+        let $read = $(evt.target.closest('.read'));
+        if ($read.length > 0) {
+            stopAudioPlayer();
+            var lnk = $read[0].firstElementChild.href;
+            ga('send', 'event', 'Audio', 'click', 'Read Article ' + lnk);
+            return;
+        }
+
+        let $track = $(evt.target.closest('.tracks'));
+
+        if ($track.length > 0) {
+            // if we are already at the same track number, no need to do anything, 
+            // after all, we do not want the audio to play from beginning again, do we :)
+            // hasAudioStarted is for corner case where we haven't played any audio yet and directly clicked on the playlist track     
+            if (hasAudioStarted && track_number === $track.data('track-number')) { return; }
+
+            setPlayerMediaInfo($track);
+            aud.pause();
+            aud.load();
+            startAudioPlayer();
+        }
+    });
+
+    $prevNextBtn.click(function (evt) {
+        let $btn = $(evt.target.closest('.audio-control-btn')),
+            id = $btn[0].id,
+            $track,
+            TOTAL_TRACKS = $('#audioSources').children().length;
+
+        id === 'next' ? track_number += 2 : track_number -= 2;
+
+        // might need to disable the prev next button when at the beginning or end of list for better UX
+        if (track_number < 0) { track_number = 0; return; }
+        if (track_number > TOTAL_TRACKS - 1) { track_number = TOTAL_TRACKS - 1; return; }
+
+        $track = $audioSources.find(`div[data-track-number="${track_number}"]`);
+
+        if ($track.length > 0) {
+            setPlayerMediaInfo($track);
+            aud.pause();
+            aud.load();
+            startAudioPlayer();
+        }
+    });
+
+    $prevBtn.click(function () {
+        ga('send', 'event', 'Audio', 'click', 'Prev Audio');
+    });
+
+    $nextBtn.click(function () {
+        ga('send', 'event', 'Audio', 'click', 'Next Audio');
+    });
+
+    function setPlayerMediaInfo($track) {
+        let src = $track.data('audio'),
+            date = $track.data('date'),
+            title = $track.data('title');			
+
+        track_number = $track.data('track-number');
+
+        aud.src = src;
+		var today = new Date();
+        $date.html(formatPubdate(today));
+        $title.html(title);
+
+        // https://css-tricks.com/restart-css-animation/
+        $title.removeClass();
+        void $title[0].offsetWidth; //trigger reflow
+        $title.addClass('title-box');
+
+        if (src === 'https://cdn.thestar.com.my/Content/Audio/next.mp3' || src === 'https://cdn.thestar.com.my/Content/Audio/intro.mp3' || src === 'https://cdn.thestar.com.my/Content/Audio/signoff.mp3') {
+            $date.css({ visibility: 'hidden' });
+            $title.css({ visibility: 'hidden' });
+        }
+        else {
+			let position = $track.data('position'),
+				guid = $track.data('guid'),
+				category = $track.data('category'),
+				author = $track.data('author');		
+				
+            $date.css({ visibility: 'visible' });
+            $title.css({ visibility: 'visible' });
+			dataLayer.push({
+				"event": "readerEvent",
+				"list_type": "News Reader",
+				"list_position": position,
+				"content_type": "News Read",
+				"content_title": title,
+				"content_id": guid,
+				"content_category": category,
+				"content_author": author,
+				"content_sp": "NA"
+			});
+        }
+    }
+
+    function startAudioPlayer() {
+        hasAudioStarted = true;
+        aud.play();
+        $volume.slideDown();
+        $prevNextBtn.slideDown();
+        $progressBox.slideDown();
+        $playButton.removeClass('fa-play').addClass('fa-pause');
+
+        // we can only have one audio playing at a time, so we remove others playing class, and set the selected track playing class
+        $('.tracks').removeClass('playing');
+        $(`.tracks[data-track-number="${track_number}"]`).addClass('playing');
+        // reset the icons
+        $(`.tracks`).find('.play-btn i').removeClass().addClass('fa fa-play');
+        $(`.tracks[data-track-number="${track_number}"]`).find('.play-btn i').removeClass().addClass('fa fa-volume-up');
+
+        if ($(`.tracks[data-track-number="${track_number}"] > div.read > a`)[0] != undefined) {
+            var lnk = $(`.tracks[data-track-number="${track_number}"] > div.read > a`)[0].href;
+            ga('send', 'event', 'Audio', 'click', 'Play Audio ' + lnk);
+
+            //track listened story audio url into localStorage
+            //if (lnk.length > 0) {
+                //var maxHistory = 50;
+                //var params = {
+                    //apikey: "thestar.com.my",
+                    //uuid: PARSELY.config.parsely_site_uuid,
+                    //url: lnk
+                //};
+                //var localStorID = params.uuid + "-history";
+
+                //var historyItemString = window.localStorage[localStorID];
+                //if (historyItemString) {
+                    //var historyItem = JSON.parse(historyItemString)
+
+                    //var index = historyItem.indexOf(params.url);
+                    //while (index > -1) {
+                        //historyItem.splice(index, 1);
+                        //index = historyItem.indexOf(params.url);
+                    //}
+                    //historyItem.push(params.url);
+                    //get last n of history
+                    //historyItem = historyItem.slice(Math.max(historyItem.length - maxHistory, 0));
+                    //window.localStorage[localStorID] = JSON.stringify(historyItem);
+                //}
+                //else {
+                    //var newHistoryItem = [];
+                    //newHistoryItem.push(params.url);
+                    //window.localStorage.setItem(localStorID, JSON.stringify(newHistoryItem));
+                //}
+            //}
+        }
+    }
+
+    function stopAudioPlayer() {
+        aud.pause();
+        $volume.slideUp();
+        $prevNextBtn.slideUp();
+        $progressBox.slideUp();
+        $playButton.removeClass('fa-pause').addClass('fa-play');
+        $('.tracks').removeClass('playing');
+        $(`.tracks`).find('.play-btn i').removeClass().addClass('fa fa-play');
+        ga('send', 'event', 'Audio', 'click', 'Stop Audio');
+    }
+});

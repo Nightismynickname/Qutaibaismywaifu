@@ -1,0 +1,171 @@
+var loserData = {
+"Stocks":
+[
+  {
+    "counter": "NESTLE",
+    "open": "135.400",
+    "high": "136.000",
+    "low": "135.100",
+    "lastdone": "135.100",
+    "change": "-0.900",
+    "volume": "289",
+    "percentchange": "-0.66",
+    "stockcode": "4707"
+  },
+  {
+    "counter": "TOCEAN",
+    "open": "6.300",
+    "high": "6.500",
+    "low": "6.060",
+    "lastdone": "6.070",
+    "change": "-0.230",
+    "volume": "6,916",
+    "percentchange": "-3.65",
+    "stockcode": "7218"
+  },
+  {
+    "counter": "SRIDGE",
+    "open": "0.685",
+    "high": "0.685",
+    "low": "0.420",
+    "lastdone": "0.485",
+    "change": "-0.225",
+    "volume": "250,860",
+    "percentchange": "-31.69",
+    "stockcode": "0129"
+  },
+  {
+    "counter": "PETDAG",
+    "open": "19.500",
+    "high": "19.500",
+    "low": "19.300",
+    "lastdone": "19.300",
+    "change": "-0.200",
+    "volume": "1,853",
+    "percentchange": "-1.03",
+    "stockcode": "5681"
+  },
+  {
+    "counter": "UMCCA",
+    "open": "5.080",
+    "high": "5.270",
+    "low": "5.060",
+    "lastdone": "5.130",
+    "change": "-0.150",
+    "volume": "166",
+    "percentchange": "-2.84",
+    "stockcode": "2593"
+  },
+  {
+    "counter": "PAM-C50",
+    "open": "1.850",
+    "high": "1.850",
+    "low": "1.790",
+    "lastdone": "1.790",
+    "change": "-0.080",
+    "volume": "355",
+    "percentchange": "-4.28",
+    "stockcode": "0823EA"
+  },
+  {
+    "counter": "SAM",
+    "open": "6.580",
+    "high": "6.580",
+    "low": "6.520",
+    "lastdone": "6.520",
+    "change": "-0.080",
+    "volume": "332",
+    "percentchange": "-1.21",
+    "stockcode": "9822"
+  },
+  {
+    "counter": "SUNNY-C1",
+    "open": "0.100",
+    "high": "0.100",
+    "low": "0.085",
+    "lastdone": "0.085",
+    "change": "-0.075",
+    "volume": "1,210",
+    "percentchange": "-46.88",
+    "stockcode": "0586C1"
+  },
+  {
+    "counter": "KOTRA",
+    "open": "2.500",
+    "high": "2.500",
+    "low": "2.400",
+    "lastdone": "2.410",
+    "change": "-0.060",
+    "volume": "61",
+    "percentchange": "-2.43",
+    "stockcode": "0002"
+  },
+  {
+    "counter": "PENTA",
+    "open": "5.170",
+    "high": "5.230",
+    "low": "5.010",
+    "lastdone": "5.090",
+    "change": "-0.060",
+    "volume": "53,859",
+    "percentchange": "-1.17",
+    "stockcode": "7160"
+  },
+  {
+    "counter": "SUPERMX-C2D",
+    "open": "0.100",
+    "high": "0.100",
+    "low": "0.100",
+    "lastdone": "0.100",
+    "change": "-0.060",
+    "volume": "50",
+    "percentchange": "-37.50",
+    "stockcode": "71062D"
+  },
+  {
+    "counter": "TGL",
+    "open": "2.170",
+    "high": "2.200",
+    "low": "2.150",
+    "lastdone": "2.150",
+    "change": "-0.060",
+    "volume": "2,004",
+    "percentchange": "-2.71",
+    "stockcode": "9369"
+  },
+  {
+    "counter": "WATTA",
+    "open": "0.760",
+    "high": "0.760",
+    "low": "0.700",
+    "lastdone": "0.700",
+    "change": "-0.060",
+    "volume": "2,563",
+    "percentchange": "-7.89",
+    "stockcode": "7226"
+  },
+  {
+    "counter": "PAM-A40M",
+    "open": "1.660",
+    "high": "1.660",
+    "low": "1.660",
+    "lastdone": "1.660",
+    "change": "-0.055",
+    "volume": "10",
+    "percentchange": "-3.21",
+    "stockcode": "0822EA"
+  },
+  {
+    "counter": "KAB",
+    "open": "0.760",
+    "high": "0.760",
+    "low": "0.715",
+    "lastdone": "0.720",
+    "change": "-0.050",
+    "volume": "14,871",
+    "percentchange": "-6.49",
+    "stockcode": "0193"
+  }
+]
+}
+;

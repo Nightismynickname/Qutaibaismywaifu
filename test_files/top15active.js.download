@@ -1,0 +1,171 @@
+var activeData = {
+"Stocks":
+[
+  {
+    "counter": "VIZIONE",
+    "open": "0.245",
+    "high": "0.245",
+    "low": "0.225",
+    "lastdone": "0.230",
+    "change": "-0.015",
+    "volume": "1,001,456",
+    "percentchange": "-6.12",
+    "stockcode": "7070"
+  },
+  {
+    "counter": "UCREST",
+    "open": "0.350",
+    "high": "0.375",
+    "low": "0.340",
+    "lastdone": "0.345",
+    "change": "-0.005",
+    "volume": "999,848",
+    "percentchange": "-1.43",
+    "stockcode": "0005"
+  },
+  {
+    "counter": "TANCO",
+    "open": "0.100",
+    "high": "0.115",
+    "low": "0.095",
+    "lastdone": "0.110",
+    "change": "0.010",
+    "volume": "943,449",
+    "percentchange": "10.00",
+    "stockcode": "2429"
+  },
+  {
+    "counter": "MINHO-WC",
+    "open": "0.105",
+    "high": "0.120",
+    "low": "0.090",
+    "lastdone": "0.090",
+    "change": "-0.015",
+    "volume": "908,503",
+    "percentchange": "-14.29",
+    "stockcode": "5576WC"
+  },
+  {
+    "counter": "TAWIN",
+    "open": "0.170",
+    "high": "0.175",
+    "low": "0.155",
+    "lastdone": "0.155",
+    "change": "-0.010",
+    "volume": "872,775",
+    "percentchange": "-6.06",
+    "stockcode": "7097"
+  },
+  {
+    "counter": "MAYBULK",
+    "open": "0.810",
+    "high": "0.855",
+    "low": "0.790",
+    "lastdone": "0.795",
+    "change": "-0.025",
+    "volume": "770,241",
+    "percentchange": "-3.05",
+    "stockcode": "5077"
+  },
+  {
+    "counter": "NICE",
+    "open": "0.235",
+    "high": "0.255",
+    "low": "0.235",
+    "lastdone": "0.245",
+    "change": "0.020",
+    "volume": "764,993",
+    "percentchange": "8.89",
+    "stockcode": "7139"
+  },
+  {
+    "counter": "KTG",
+    "open": "0.215",
+    "high": "0.235",
+    "low": "0.215",
+    "lastdone": "0.225",
+    "change": "0.005",
+    "volume": "680,409",
+    "percentchange": "2.27",
+    "stockcode": "7165"
+  },
+  {
+    "counter": "TDM",
+    "open": "0.320",
+    "high": "0.335",
+    "low": "0.315",
+    "lastdone": "0.320",
+    "change": "0.005",
+    "volume": "675,197",
+    "percentchange": "1.59",
+    "stockcode": "2054"
+  },
+  {
+    "counter": "LKL",
+    "open": "0.335",
+    "high": "0.370",
+    "low": "0.335",
+    "lastdone": "0.365",
+    "change": "0.030",
+    "volume": "640,976",
+    "percentchange": "8.96",
+    "stockcode": "0182"
+  },
+  {
+    "counter": "KARYON",
+    "open": "0.270",
+    "high": "0.295",
+    "low": "0.250",
+    "lastdone": "0.255",
+    "change": "-0.015",
+    "volume": "588,359",
+    "percentchange": "-5.56",
+    "stockcode": "0054"
+  },
+  {
+    "counter": "WTK",
+    "open": "0.585",
+    "high": "0.645",
+    "low": "0.570",
+    "lastdone": "0.595",
+    "change": "0.020",
+    "volume": "527,823",
+    "percentchange": "3.48",
+    "stockcode": "4243"
+  },
+  {
+    "counter": "MINHO",
+    "open": "0.455",
+    "high": "0.475",
+    "low": "0.415",
+    "lastdone": "0.415",
+    "change": "-0.040",
+    "volume": "432,937",
+    "percentchange": "-8.79",
+    "stockcode": "5576"
+  },
+  {
+    "counter": "SYF",
+    "open": "0.445",
+    "high": "0.450",
+    "low": "0.420",
+    "lastdone": "0.425",
+    "change": "-0.015",
+    "volume": "432,357",
+    "percentchange": "-3.41",
+    "stockcode": "7082"
+  },
+  {
+    "counter": "SEDANIA",
+    "open": "0.310",
+    "high": "0.330",
+    "low": "0.290",
+    "lastdone": "0.310",
+    "change": "0.005",
+    "volume": "415,692",
+    "percentchange": "1.64",
+    "stockcode": "0178"
+  }
+]
+}
+;
