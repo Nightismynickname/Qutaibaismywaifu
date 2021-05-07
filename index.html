@@ -31,20 +31,7 @@
 </script>
   <!--START: article.blade.php test-->
 
-  <!-- Android native install app-->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/theme_metro/js/sw.js').then(function (registration) {
-          // Registration was successful
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-          // registration failed :(
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
-  </script>
+
 
   <link rel="manifest" href="/theme_metro/js/manifest.json">
 
@@ -104,7 +91,69 @@
     }
   </style>
 
-  
+  <script>
+
+    if (navigator.userAgent.match(/Android/i)) {
+
+      let deferredPrompt;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        //btnAdd.style.display = 'block';  
+        document.getElementById("installContainer").classList.remove("installApp");
+        document.getElementById("installContainer").classList.add("showInstall");
+        document.getElementById("installContainer").style.display = "inline";
+        jQuery('div.stickyy').attr("style", "top: 0 !important; padding-bottom: 3px !important;");
+        jQuery('#navbar-main.affix').attr("style", "top: 55px !important;");
+
+        var position = jQuery(window).scrollTop();
+        jQuery(window).scroll(function () {
+          var scroll = jQuery(window).scrollTop();
+          if (jQuery('#installContainer').hasClass('showInstall')) {
+            if (scroll > position) {
+              //when scrolling down
+              if (jQuery('#navbar-main').hasClass('affix')) {
+                jQuery('div.stickyy').attr("style", "top: 0 !important; padding-bottom: 3px !important;");
+                jQuery('#navbar-main.affix').attr("style", "top: 55px !important;");
+              }
+            }
+            else {
+              if (jQuery('#navbar-main').hasClass('affix-top')) {
+                jQuery('div.stickyy').removeAttr("style", "top: 0 !important;");
+                jQuery('#navbar-main').removeAttr("style", "top: 55px !important;");
+              }
+            }
+            position = scroll;
+          }
+        });
+
+      });
+
+      btnAdd.addEventListener('click', (e) => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice
+          .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the A2HS prompt');
+            } else {
+              console.log('User dismissed the A2HS prompt');
+            }
+            deferredPrompt = null;
+          });
+
+      });
+
+      btnClose.addEventListener('click', function () {
+        document.getElementById('installContainer').style.display = 'none';
+        document.getElementById("installContainer").classList.remove("showInstall");
+        jQuery('#installContainer').addClass('installApp');
+      });
+
+    }
+
+  </script>
+
 
 
   <meta name="description"
