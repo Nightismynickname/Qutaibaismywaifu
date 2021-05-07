@@ -46,7 +46,7 @@
     }
   </script>
 
-  <link rel="manifest" href="/theme_metro/js/manifest.json">
+
 
   <div class="stickyy">
     <div id="installContainer" style="display:none" class="installApp">
@@ -57,7 +57,52 @@
       <button id="btnAdd" type="button"> View </button>
     </div>
   </div>
+  <style>
+    div.stickyy {
+      background-color: white;
+      position: sticky !important;
+      z-index: 200 !important;
+    }
 
+    /*        @media  only screen and (max-width: 767px){  
+            a.navbar-brand.brand-mobile {
+                padding-top: 3px !important;
+                margin-top: 12px !important;
+            }
+        }    */
+
+    #installContainer {
+      background-color: white;
+      position: initial;
+      display: inline-block;
+    }
+
+    #imgBox {
+      margin-left: 30px;
+    }
+
+    #btnAdd {
+      border: 1px solid #d6d6d6;
+      padding: 1px 8px;
+      text-align: center;
+      text-decoration: none;
+      position: absolute;
+      border-radius: 3px;
+      right: 10%;
+      top: 30%;
+    }
+
+    #btnClose {
+      position: absolute;
+      background: none;
+      border: none;
+      margin: 0;
+      padding: 0;
+      left: 3%;
+      top: 10%;
+      font-size: 32px;
+    }
+  </style>
 
   <script>
 
