@@ -372,7 +372,7 @@ img[src^="https://content.thestar.com.my/smg/settag/name=lotame/tags="] {display
 <script src="./test_files/widget_mixin.js.download"></script>
 <script>var my_jquery = jQuery;</script>
 <script>jQuery = my_jquery;</script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 var pageType = jQuery('meta[name=pageType]').attr("content");
 if(pageType == "article"){
 var cX = window.cX = window.cX || {}; cX.callQueue = cX.callQueue || [];
@@ -380,7 +380,7 @@ var cxenseRandom = jQuery('meta[name=cxenseRandom]').attr("content");
 cX.CCE = cX.CCE || {}; cX.CCE.callQueue = cX.CCE.callQueue || [];
 }
 else{ var cX = cX || {}; cX.callQueue = cX.callQueue || []; }
-</script>
+</script> -->
 <script src="./test_files/slick.min.js.download"></script>
 <script type="text/javascript" src="./test_files/jquery.unveil.js.download" defer=""></script>
 <script src="./test_files/all.js(1).download" type="text/javascript"></script>
@@ -4332,27 +4332,27 @@ $(".slick-prev").click(function(){
 </script>
 
 <!-- Cxense script begin -->
-<script type="text/javascript">
+// <script type="text/javascript">
     
-var pageType = jQuery('meta[name=pageType]').attr("content");
+// var pageType = jQuery('meta[name=pageType]').attr("content");
 
-if(pageType == "article"){
-    var cX = window.cX = window.cX || {}; cX.callQueue = cX.callQueue || [];
-    var cxenseRandom = jQuery('meta[name=cxenseRandom]').attr("content");
-    cX.CCE = cX.CCE || {}; cX.CCE.callQueue = cX.CCE.callQueue || [];
-    cX.callQueue.push(['setRandomId',cxenseRandom]); // server side generated id
-    cX.callQueue.push(['setSiteId', '1145278932220698298']);    
+// if(pageType == "article"){
+//     var cX = window.cX = window.cX || {}; cX.callQueue = cX.callQueue || [];
+//     var cxenseRandom = jQuery('meta[name=cxenseRandom]').attr("content");
+//     cX.CCE = cX.CCE || {}; cX.CCE.callQueue = cX.CCE.callQueue || [];
+//     cX.callQueue.push(['setRandomId',cxenseRandom]); // server side generated id
+//     cX.callQueue.push(['setSiteId', '1145278932220698298']);    
     
-                        cX.callQueue.push(['setCustomParameters', { 'usergroup': 'subscriber' }]);
+//                         cX.callQueue.push(['setCustomParameters', { 'usergroup': 'subscriber' }]);
                 
-    cX.CCE.callQueue.push(['sendPageViewEvent','smg', '0240b44ae7cc929b3991ca5c126d42a11e5582d4']);
-}
-else{
-    var cX = cX || {}; cX.callQueue = cX.callQueue || [];
-    cX.callQueue.push(['setSiteId', '1145278932220698298']);
-    cX.callQueue.push(['sendPageViewEvent']);
-}
-</script>
+//     cX.CCE.callQueue.push(['sendPageViewEvent','smg', '0240b44ae7cc929b3991ca5c126d42a11e5582d4']);
+// }
+// else{
+//     var cX = cX || {}; cX.callQueue = cX.callQueue || [];
+//     cX.callQueue.push(['setSiteId', '1145278932220698298']);
+//     cX.callQueue.push(['sendPageViewEvent']);
+// }
+// </script>
 
 <!-- Cxense script end -->
 
