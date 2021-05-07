@@ -358,16 +358,16 @@
       }
     }
   </style>
-  <!-- <script type="text/javascript" async="" src="https://scdn.cxense.com/cx.cce.js"></script>
+  <script type="text/javascript" async="" src="https://scdn.cxense.com/cx.cce.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://cdn.thestar.com.my/Themes/js/parsely-onload.min.js"></script> -->
+  <script src="https://cdn.thestar.com.my/Themes/js/parsely-onload.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.10/URI.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.18.10/URI.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/postscribe/2.0.8/postscribe.min.js"></script>
   <script src="https://cdn.thestar.com.my/Themes/js/js.cookie.js"></script>
@@ -407,7 +407,7 @@
   <script src="https://cdn.thestar.com.my/Themes/js/owl.carousel.min.js"></script>
   <script src="https://cdn.thestar.com.my/Themes/js/parsely-onload.min.js"></script>
   <script src="https://cdn.thestar.com.my/Themes/js/mediatag.min.js"></script>
-  <script src="https://cdn.thestar.com.my/Themes/js/mediahelper.min.js"></script> -->
+  <script src="https://cdn.thestar.com.my/Themes/js/mediahelper.min.js"></script>
   <link rel="apple-touch-icon" sizes="57x57" href="https://cdn.thestar.com.my/Themes/img/touch-icon-precomposed.png">
   <link rel="apple-touch-icon" sizes="114x114" href="https://cdn.thestar.com.my/Themes/img/touch-icon-iphone.png">
   <link rel="apple-touch-icon" sizes="120x120" href="https://cdn.thestar.com.my/Themes/img/touch-icon-120x120.png">
@@ -419,111 +419,7 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.thestar.com.my/Themes/css/widgettop.min.css" />
   <script src="https://cdn.thestar.com.my/Themes/js/widgettop.min.js"></script>
 
-  <script data-obct type="text/javascript">
-    /** DO NOT MODIFY THIS CODE**/
-    !function (_window, _document) {
-      var OB_ADV_ID = '00a149fe9401c432f57edaa96ee66b065d';
-      if (_window.obApi) { var toArray = function (object) { return Object.prototype.toString.call(object) === '[object Array]' ? object : [object]; }; _window.obApi.marketerId = toArray(_window.obApi.marketerId).concat(toArray(OB_ADV_ID)); return; }
-      var api = _window.obApi = function () { api.dispatch ? api.dispatch.apply(api, arguments) : api.queue.push(arguments); }; api.version = '1.1'; api.loaded = true; api.marketerId = OB_ADV_ID; api.queue = []; var tag = _document.createElement('script'); tag.async = true; tag.src = '//amplify.outbrain.com/cp/obtp.js'; tag.type = 'text/javascript'; var script = _document.getElementsByTagName('script')[0]; script.parentNode.insertBefore(tag, script);
-    }(window, document);
-    obApi('track', 'PAGE_VIEW');
-  </script>
 
-  <noscript><img src="//amplifypixel.outbrain.com/pixel?mid=00a149fe9401c432f57edaa96ee66b065d"></noscript>
-
-  <!-- Start Deco masthead -->
-  <script type="text/javascript">
-    jQuery(document).ready(function () {
-      var checkDeco = new Date();
-      var decoStart = new Date("March 10, 2021 00:00:00");
-      var decoEnd = new Date("December 31, 2021 23:59:59");
-      if (checkDeco.getTime() > decoStart.getTime() && checkDeco.getTime() < decoEnd.getTime()) {
-        //This is for regular festival masthead
-        //$("#page-header > div >div").attr("class", "container masthead");
-
-        //This is for special anniversary50 celebration only
-        $("#page-header > div >div").attr("class", "container relative");
-        $("#page-header > div >div").prepend('<a class="masthead-2" href="https://50.thestar.com.my/" target="_blank" data-list-type="Header" data-content-type="Outbound Referral" data-content-title="Star50" data-content-id="https://50.thestar.com.my/"><img src="https://cdn.thestar.com.my/Themes/img/star50-logo-raya.png"></a>');
-        $("#wrapper > .wrapper-maincontent > .content-wrap").prepend('<section class="anniv-special"><a href="https://50.thestar.com.my/" target="_blank" data-list-type="Header" data-content-type="Outbound Referral" data-content-title="Star50" data-content-id="https://50.thestar.com.my/"><img src="https://cdn.thestar.com.my/Themes/img/star50-logo-raya.png" alt="The Star People&apos;s paper 50 Years Anniversary"/></a></section>');
-      }
-    });
-  </script>
-  <!-- End Deco masthead -->
-  <script>var rmad = false;</script>
-  <!-- End Header Script -->
-  <!-- theme includes js_extra.blade.php -->
-  <script type="text/javascript">
-    var viewid = Math.round(Math.random() * 100000000000);
-    function sasiajserver(size, position) {
-      var SAS = JSON.parse(jQuery('meta[name=SAS]').attr("content"));
-      var rdm2 = Math.round(Math.random() * 100000000000);
-      return "https://content.thestar.com.my/smg/jserver/viewid=" + viewid +
-        "/random=" + rdm2 +
-        "/network=SMG/site=TSOL" +
-        "/area=" + SAS.area +
-        "/pagetype=" + SAS.pagetype +
-        "/platform=" + sascalcsize() +
-        "/size=" + size +
-        "/position=" + position;
-    }
-    function sascalcsize() { var b = window.getComputedStyle(document.querySelector(".sassize")); var a = b.getPropertyValue("--breakpoint"); return a };
-  </script>
-
-  <!-- Admiral -->
-  <script>
-    window.admiral = window.admiral || function () { (admiral.q = admiral.q || []).push(arguments) };
-
-    window.admiral("targeting", "set", "MyStarMember", "true");
-    window.admiral("targeting", "set", "DigitalAccessSubscriber", "true");
-    if (pageType == "article") {
-      var daxsubscriber = true;
-    }
-  </script>
-  <!-- End Admiral -->
-  <!-- resources common css_includes.blade.php -->
-  <!-- theme includes css_includes.blade.php -->
-  <!-- Widget CSS links -->
-  <link type="text/css" rel="stylesheet" href="/theme_metro/widgets/article-details/article-details.css" />
-  <!-- Page Header scripts -->
-  <link href="https://cdn.thestar.com.my/Themes/css/print_v2.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="https://cdn.thestar.com.my/Themes/js/story.min.js?v=20200924" defer></script>
-  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-  <script async src='//cdn.thestar.com.my/Themes/js/prebid.js'></script>
-  <script>
-    var sectionName = $('meta[name=article_section_name]').attr("content");
-    document.write('<scr');
-    document.write('ipt src="https://cdn.thestar.com.my/Themes/js/gpt/' + sectionName + 'Story.js?v=20210423">');
-    document.write("</scr");
-    document.write("ipt>");
-  </script>
-
-  <script type="text/javascript" src="/theme_metro/js/trendingParsely.js"></script>
-
-  <script>
-    (function (w, d, s, u, n, i, f, g, e, c) { w.WDMObject = n; w[n] = w[n] || function () { (w[n].q = w[n].q || []).push(arguments); }; w[n].l = 1 * new Date(); w[n].i = i; w[n].f = f; w[n].g = g; e = d.createElement(s); e.async = 1; e.src = u; c = d.getElementsByTagName(s)[0]; c.parentNode.insertBefore(e, c); })(window, document, "script", "//api.dmcdn.net/pxl/cpe/client.min.js", "cpe", "5f64733dfc2346192550c7a5", { autonext_enable: false })
-  </script>
-
-  <!-- Start of Survicate (www.survicate.com) code -->
-  <script type="text/javascript">
-      (function (w) {
-        var s = document.createElement('script');
-        s.src = '//survey.survicate.com/workspaces/40636b6a623c41a574580c19efa630b6/web_surveys.js';
-        s.async = true;
-        var e = document.getElementsByTagName('script')[0];
-        e.parentNode.insertBefore(s, e);
-      })(window);
-  </script>
-  <!-- End of Survicate code -->
-  <!-- Admiral script -->
-  <script>
-    window.admiral("targeting", "set", "pageClass", "article");
-  </script>
-  <!-- End Admiral script -->
-
-  <script>
-    window.Laravel = { "csrfToken": "TOgOxOgI4edqK7xbfVbYFYZV1SrCoxXMjC6ErHHf" }
-    var IMAGE_URL = 'https://apicms.thestar.com.my/';
-  </script>
 
 </head>
 
